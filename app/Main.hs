@@ -20,6 +20,41 @@ tailLength = 300
 fadeSpeed :: Float
 fadeSpeed = 1 / fromIntegral tailLength
 
+initFromTupels :: SimulationData
+initFromTupels = initialConditions ((0,0), (0,1), (0, 5)) ((-0.5, 0.5), (0.5,-0.5), (0,0)) (1,1,0.01)
+
+initialConditions :: ((Float, Float), (Float, Float), (Float, Float)) -> ((Float, Float), (Float, Float), (Float, Float)) -> (Float, Float, Float) -> SimulationData
+initialConditions ((p1x, p1y), (p2x, p2y), (p3x, p3y)) ((v1x, v1y), (v2x, v2y), (v3x, v3y)) (mass1, mass2, mass3) = result 
+    where
+        pos1 = Vector2D p1x p1y
+        pos2 = Vector2D p2x p2y
+        pos3 = Vector2D p3x p3y
+        vel1 = Vector2D v1x v1y
+        vel2 = Vector2D v2x v2y
+        vel3 = Vector2D v3x v3y
+        result = SimulationData {
+            body1 = Body {
+                mass = mass1,
+                position = pos1,
+                velocity = vel1,
+                c = red,
+                traceBuffer = []
+            },
+            body2 = Body {
+                mass = mass2,
+                position = pos2,
+                velocity = vel2,
+                c = green,
+                traceBuffer = []
+            },
+            body3 = Body {
+                mass = mass3,
+                position = pos3,
+                velocity = vel3,
+                c = blue,
+                traceBuffer = []
+            }
+        }
 
 data Vector2D = Vector2D {
     x :: Float,
@@ -155,7 +190,7 @@ render (SimulationData b1 b2 b3) = pictures [renderBody b1, renderBody b2, rende
 
 
 main :: IO ()
-main = simulate window background fps initData render update
+main = simulate window background fps initFromTupels render update
     where window = InWindow "three-body-sim" (800, 600) (50, 50)
           background = black
           fps = 600
