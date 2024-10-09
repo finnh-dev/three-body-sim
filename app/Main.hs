@@ -1,7 +1,6 @@
 module Main where
 
 import Graphics.Gloss
-import Debug.Trace
 
 gConst :: Float
 gConst = 1 -- 6.673 * (10.0 ** (-11))
@@ -14,6 +13,13 @@ massScale = 1
 
 timeFactor :: Float
 timeFactor = 1
+
+tailLength :: Int
+tailLength = 300
+
+fadeSpeed :: Float
+fadeSpeed = 1 / fromIntegral tailLength
+
 
 data Vector2D = Vector2D {
     x :: Float,
@@ -34,7 +40,8 @@ data Body = Body {
     mass :: Float,
     position :: Vector2D,
     velocity :: Vector2D,
-    c :: Color
+    c :: Color,
+    traceBuffer :: [Vector2D]
 } deriving Show
 
 data SimulationData = SimulationData {
@@ -55,7 +62,8 @@ initData = SimulationData {
             x = 0.4662036850,
             y = 0.4323657300
         },
-        c = green
+        c = green,
+        traceBuffer = []
     },
     body2 = Body {
         mass = 1 * massScale,
@@ -67,7 +75,8 @@ initData = SimulationData {
             x = -0.93240737,
             y = -0.86473146
         },
-        c = red
+        c = red,
+        traceBuffer = []
     },
     body3 = Body {
         mass = 1 * massScale,
@@ -79,7 +88,8 @@ initData = SimulationData {
             x = 0.4662036850,
             y = 0.4323657300
         },
-        c = blue
+        c = blue,
+        traceBuffer = []
     }
 }
 
@@ -98,7 +108,7 @@ newtonDiv :: Vector2D -> Vector2D -> Vector2D
 newtonDiv pa pb = (pa - pb) `scalarDiv` (magnitude (pa - pb) ^ (3 :: Integer))
 
 threeBodyAcceleration :: Body -> Body -> Body -> (Vector2D, Vector2D, Vector2D)
-threeBodyAcceleration (Body m1 p1 _ _) (Body m2 p2 _ _) (Body m3 p3 _ _) = result
+threeBodyAcceleration (Body m1 p1 _ _ _) (Body m2 p2 _ _ _) (Body m3 p3 _ _ _) = result
     where
         result = (
                 ((-gConst * m2) `scalarMul`  newtonDiv p1 p2) + ((-gConst * m3) `scalarMul`  newtonDiv p1 p3),
@@ -107,14 +117,15 @@ threeBodyAcceleration (Body m1 p1 _ _) (Body m2 p2 _ _) (Body m3 p3 _ _) = resul
             )
 
 applyAcceleration :: Body -> Vector2D -> Float -> Body
-applyAcceleration body acc deltaT = trace (show result) result
+applyAcceleration body acc deltaT = result
     where
         vel = velocity body + ((deltaT * timeFactor) `scalarMul` acc)
         result = Body {
             mass = mass body,
             position = position body + ((deltaT * timeFactor) `scalarMul` vel),
             velocity = vel,
-            c = c body
+            c = c body,
+            traceBuffer = take tailLength (position body : traceBuffer body)
         }
 
 update :: p1 -> Float -> SimulationData -> SimulationData
@@ -127,8 +138,17 @@ update _ deltaT simData = newSimData
             body3 = applyAcceleration (body3 simData) a3 deltaT
         }
 
+fade :: Color -> Color
+fade col = makeColor r g b (a - fadeSpeed)
+    where
+        (r,g,b,a) = rgbaOfColor col
+
+renderTrace :: Color -> [Vector2D] -> [Picture]
+renderTrace _ [] = []
+renderTrace col (pos:traceBuf) = color col (translate (x pos * simulationScale) (y pos * simulationScale) (circleSolid 1)) : renderTrace (fade col) traceBuf
+
 renderBody :: Body -> Picture
-renderBody (Body _ pos _ col) =  color col (translate (x pos * simulationScale) (y pos * simulationScale) (circleSolid 5))
+renderBody (Body _ pos _ col traceBuf) =  pictures (renderTrace col traceBuf ++ [color col (translate (x pos * simulationScale) (y pos * simulationScale) (circleSolid 5))])
 
 render :: SimulationData -> Picture
 render (SimulationData b1 b2 b3) = pictures [renderBody b1, renderBody b2, renderBody b3]
@@ -138,4 +158,4 @@ main :: IO ()
 main = simulate window background fps initData render update
     where window = InWindow "three-body-sim" (800, 600) (50, 50)
           background = black
-          fps = 40
+          fps = 600
