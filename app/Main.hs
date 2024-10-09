@@ -70,7 +70,7 @@ initData = SimulationData {
         c = red
     },
     body3 = Body {
-        mass = 0.5 * massScale,
+        mass = 1 * massScale,
         position = Vector2D {
             x = 0.97000436,
             y = -0.24308753
