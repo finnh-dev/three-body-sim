@@ -21,10 +21,10 @@ fadeSpeed :: Float
 fadeSpeed = 1 / fromIntegral tailLength
 
 initFromTupels :: SimulationData
-initFromTupels = initialConditions ((0,0), (0,1), (0, 5)) ((-0.5, 0.5), (0.5,-0.5), (0,0)) (1,1,0.01)
+initFromTupels = initialConditions ((2,0), (0,3), (-2, 0)) ((0, -0.1), (-0.6,-0.1), (0,0.2)) (2,1,1)
 
 initialConditions :: ((Float, Float), (Float, Float), (Float, Float)) -> ((Float, Float), (Float, Float), (Float, Float)) -> (Float, Float, Float) -> SimulationData
-initialConditions ((p1x, p1y), (p2x, p2y), (p3x, p3y)) ((v1x, v1y), (v2x, v2y), (v3x, v3y)) (mass1, mass2, mass3) = result 
+initialConditions ((p1x, p1y), (p2x, p2y), (p3x, p3y)) ((v1x, v1y), (v2x, v2y), (v3x, v3y)) (mass1, mass2, mass3) = result
     where
         pos1 = Vector2D p1x p1y
         pos2 = Vector2D p2x p2y
@@ -79,6 +79,16 @@ data Body = Body {
     traceBuffer :: [Vector2D]
 } deriving Show
 
+setPosition :: Body -> Vector2D -> Body
+setPosition self pos = result
+    where
+        result = Body {
+            mass = mass self,
+            position = pos,
+            velocity = velocity self,
+            c = c self,
+            traceBuffer = traceBuffer self
+        }
 data SimulationData = SimulationData {
     body1 :: Body,
     body2 :: Body,
@@ -173,6 +183,26 @@ update _ deltaT simData = newSimData
             body3 = applyAcceleration (body3 simData) a3 deltaT
         }
 
+transformTails :: Body -> Vector2D -> Body 
+transformTails self center = result
+    where
+        result = Body {
+            mass = mass self,
+            position = position self,
+            velocity = velocity self,
+            c = c self,
+            traceBuffer = map (\pos -> pos - center) (traceBuffer self)
+        }
+
+transformPositions :: Body -> SimulationData -> SimulationData
+transformPositions (Body _ center _ _ _) simData = result
+    where
+        result = SimulationData {
+            body1 = transformTails (setPosition (body1 simData) (position (body1 simData) - center)) center,
+            body2 = transformTails (setPosition (body2 simData) (position (body2 simData) - center)) center,
+            body3 = transformTails (setPosition (body3 simData) (position (body3 simData) - center)) center
+        }
+
 fade :: Color -> Color
 fade col = makeColor r g b (a - fadeSpeed)
     where
@@ -185,8 +215,13 @@ renderTrace col (pos:traceBuf) = color col (translate (x pos * simulationScale) 
 renderBody :: Body -> Picture
 renderBody (Body _ pos _ col traceBuf) =  pictures (renderTrace col traceBuf ++ [color col (translate (x pos * simulationScale) (y pos * simulationScale) (circleSolid 5))])
 
+renderBodies :: SimulationData -> Picture
+renderBodies (SimulationData b1 b2 b3) = pictures [renderBody b1, renderBody b2, renderBody b3]
+
 render :: SimulationData -> Picture
-render (SimulationData b1 b2 b3) = pictures [renderBody b1, renderBody b2, renderBody b3]
+render simData = renderBodies (transformPositions center simData)
+    where 
+        center = body1 simData
 
 
 main :: IO ()
