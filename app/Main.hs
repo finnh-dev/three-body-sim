@@ -13,19 +13,64 @@ massScale :: Float
 massScale = 1
 
 timeFactor :: Float
-timeFactor = 1
+timeFactor = 0.5
 
 tailLength :: Int
-tailLength = 300
+tailLength = 1000
 
 fadeSpeed :: Float
+-- fadeSpeed = 0
 fadeSpeed = 1 / fromIntegral tailLength
 
-initFromTupels :: SimulationData
-initFromTupels = initialConditions ((0,0), (0,1.8), (0, -2.1)) ((1, 0), (0.5,0), (0.5,0)) (1,1,1)
+initialConditions :: SimulationData
+-- initialConditions = initFromTupels ((-1,0), (1,0), (0, 0)) ((0.557809,0.451774), (0.557809,0.451774), (-1.115618,-0.903548)) (1, 1, 1)
+-- initialConditions = initFromTupels
+--     ((-1.1889693067,0),
+--     (3.8201881837,0),
+--     (-2.631218877,0))
 
-initialConditions :: ((Float, Float), (Float, Float), (Float, Float)) -> ((Float, Float), (Float, Float), (Float, Float)) -> (Float, Float, Float) -> SimulationData
-initialConditions ((p1x, p1y), (p2x, p2y), (p3x, p3y)) ((v1x, v1y), (v2x, v2y), (v3x, v3y)) (mass1, mass2, mass3) = result
+--     ((0, 0.8042120498),
+--     (0, 0.0212794833),
+--     (0, -0.8254915331))
+
+--     (1, 1, 1) 
+initialConditions = initFromArray  [0.898348747, 0, 0, 0.9475564971, -0.6754911045, 0, 0, -1.7005860354, -0.2228576425, 0, 0, 0.7530295383] (1,1,1)
+
+initFromArray :: [Float] -> (Float, Float, Float) -> SimulationData
+initFromArray a (mass1, mass2, mass3) = result
+    where
+        pos1 = Vector2D (a!!0) (a!!1)
+        vel1 = Vector2D (a!!2) (a!!3)
+        pos2 = Vector2D (a!!4) (a!!5)
+        vel2 = Vector2D (a!!6) (a!!7)
+        pos3 = Vector2D (a!!8) (a!!9)
+        vel3 = Vector2D (a!!10) (a!!11)
+        result = SimulationData {
+            body1 = Body {
+                mass = mass1,
+                position = pos1,
+                velocity = vel1,
+                c = red,
+                traceBuffer = []
+            },
+            body2 = Body {
+                mass = mass2,
+                position = pos2,
+                velocity = vel2,
+                c = green,
+                traceBuffer = []
+            },
+            body3 = Body {
+                mass = mass3,
+                position = pos3,
+                velocity = vel3,
+                c = blue,
+                traceBuffer = []
+            }
+        }
+
+initFromTupels :: ((Float, Float), (Float, Float), (Float, Float)) -> ((Float, Float), (Float, Float), (Float, Float)) -> (Float, Float, Float) -> SimulationData
+initFromTupels ((p1x, p1y), (p2x, p2y), (p3x, p3y)) ((v1x, v1y), (v2x, v2y), (v3x, v3y)) (mass1, mass2, mass3) = result
     where
         pos1 = Vector2D p1x p1y
         pos2 = Vector2D p2x p2y
@@ -224,9 +269,9 @@ renderBodies (SimulationData b1 b2 b3) = pictures [renderBody b1, renderBody b2,
 render :: SimulationData -> Picture
 render simData = pictures (renderGrid center ++ [renderBodies (transformPositions center simData)])
     where
+        --center = position (body2 simData)
         center = (position (body1 simData) + position (body2 simData) + position (body3 simData)) `scalarDiv` 3
 
--- Function to create a grid of lines
 drawGrid :: Vector2D -> Float -> Float -> Float -> Color -> [Picture]
 drawGrid (Vector2D cx cy) width height spacing col =
     let verticalLines = [Line [(xpos - offsetx,-height / 2 - offsety), (xpos - offsetx, height / 2 - offsety)] | xpos <- [(-width / 2), (-width / 2 + spacing)..(width / 2)]]
@@ -240,7 +285,7 @@ renderGrid :: Vector2D -> [Picture]
 renderGrid center = drawGrid center 20000 20000 40 (greyN 0.1)
 
 main :: IO ()
-main = simulate window background fps initFromTupels render update
+main = simulate window background fps initialConditions render update
     where window = InWindow "three-body-sim" (800, 600) (50, 50)
           background = black
           fps = 600
