@@ -194,8 +194,8 @@ transformTails self center = result
             traceBuffer = map (\pos -> pos - center) (traceBuffer self)
         }
 
-transformPositions :: Body -> SimulationData -> SimulationData
-transformPositions (Body _ center _ _ _) simData = result
+transformPositions :: Vector2D -> SimulationData -> SimulationData
+transformPositions center simData = result
     where
         result = SimulationData {
             body1 = transformTails (setPosition (body1 simData) (position (body1 simData) - center)) center,
@@ -221,7 +221,7 @@ renderBodies (SimulationData b1 b2 b3) = pictures [renderBody b1, renderBody b2,
 render :: SimulationData -> Picture
 render simData = renderBodies (transformPositions center simData)
     where 
-        center = body1 simData
+        center = (position (body1 simData) + position (body2 simData)) `scalarDiv` 2
 
 
 main :: IO ()
