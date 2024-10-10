@@ -1,6 +1,7 @@
 module Main where
 
 import Graphics.Gloss
+import Data.Fixed (mod')
 
 gConst :: Float
 gConst = 1 -- 6.673 * (10.0 ** (-11))
@@ -21,7 +22,7 @@ fadeSpeed :: Float
 fadeSpeed = 1 / fromIntegral tailLength
 
 initFromTupels :: SimulationData
-initFromTupels = initialConditions ((2,0), (0,3), (-2, 0)) ((0, -0.1), (-0.6,-0.1), (0,0.2)) (2,1,1)
+initFromTupels = initialConditions ((0,0), (0,1.8), (0, -2.1)) ((1, 0), (0.5,0), (0.5,0)) (1,1,1)
 
 initialConditions :: ((Float, Float), (Float, Float), (Float, Float)) -> ((Float, Float), (Float, Float), (Float, Float)) -> (Float, Float, Float) -> SimulationData
 initialConditions ((p1x, p1y), (p2x, p2y), (p3x, p3y)) ((v1x, v1y), (v2x, v2y), (v3x, v3y)) (mass1, mass2, mass3) = result
@@ -145,6 +146,8 @@ scalarDiv (Vector2D x1 y1) s = Vector2D (x1 / s) (y1 / s)
 scalarMul :: Float -> Vector2D -> Vector2D
 scalarMul s (Vector2D x1 y1) = Vector2D (x1 * s) (y1 * s)
 
+scalarMod :: Vector2D -> Float -> Vector2D
+scalarMod (Vector2D x1 y1) s = Vector2D (x1 `mod'` s) (y1 `mod'` s)
 
 magnitude :: Vector2D -> Float
 magnitude (Vector2D x1 y1) = sqrt (x1 ^ (2 :: Integer) + y1 ^ (2 :: Integer))
@@ -183,7 +186,7 @@ update _ deltaT simData = newSimData
             body3 = applyAcceleration (body3 simData) a3 deltaT
         }
 
-transformTails :: Body -> Vector2D -> Body 
+transformTails :: Body -> Vector2D -> Body
 transformTails self center = result
     where
         result = Body {
@@ -219,10 +222,22 @@ renderBodies :: SimulationData -> Picture
 renderBodies (SimulationData b1 b2 b3) = pictures [renderBody b1, renderBody b2, renderBody b3]
 
 render :: SimulationData -> Picture
-render simData = renderBodies (transformPositions center simData)
-    where 
-        center = (position (body1 simData) + position (body2 simData)) `scalarDiv` 2
+render simData = pictures (renderGrid center ++ [renderBodies (transformPositions center simData)])
+    where
+        center = (position (body1 simData) + position (body2 simData) + position (body3 simData)) `scalarDiv` 3
 
+-- Function to create a grid of lines
+drawGrid :: Vector2D -> Float -> Float -> Float -> Color -> [Picture]
+drawGrid (Vector2D cx cy) width height spacing col =
+    let verticalLines = [Line [(xpos - offsetx,-height / 2 - offsety), (xpos - offsetx, height / 2 - offsety)] | xpos <- [(-width / 2), (-width / 2 + spacing)..(width / 2)]]
+        horizontalLines = [Line [(-width / 2 - offsetx, ypos - offsety), (width / 2 - offsetx, ypos - offsety)] | ypos <- [(-height / 2), (-height / 2 + spacing)..(height / 2)]]
+    in map (Color col) (verticalLines ++ horizontalLines)
+    where
+        offsetx = (cx * simulationScale) `mod'` spacing
+        offsety = (cy * simulationScale) `mod'` spacing
+
+renderGrid :: Vector2D -> [Picture]
+renderGrid center = drawGrid center 20000 20000 40 (greyN 0.1)
 
 main :: IO ()
 main = simulate window background fps initFromTupels render update
