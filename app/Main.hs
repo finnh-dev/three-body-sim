@@ -13,17 +13,17 @@ massScale :: Float
 massScale = 1
 
 timeFactor :: Float
-timeFactor = 0.5
+timeFactor = 1
 
 tailLength :: Int
-tailLength = 1000
+tailLength = 600
 
 fadeSpeed :: Float
 -- fadeSpeed = 0
 fadeSpeed = 1 / fromIntegral tailLength
 
 initialConditions :: SimulationData
--- initialConditions = initFromTupels ((-1,0), (1,0), (0, 0)) ((0.557809,0.451774), (0.557809,0.451774), (-1.115618,-0.903548)) (1, 1, 1)
+-- initialConditions = initFromTupels ((-1,0), (1,0), (0, 0)) ((0.557809,0.451774), (0.557809,0.4751774), (-1.115618,-0.903548)) (1, 1, 1)
 -- initialConditions = initFromTupels
 --     ((-1.1889693067,0),
 --     (3.8201881837,0),
@@ -34,7 +34,8 @@ initialConditions :: SimulationData
 --     (0, -0.8254915331))
 
 --     (1, 1, 1) 
-initialConditions = initFromArray  [0.898348747, 0, 0, 0.9475564971, -0.6754911045, 0, 0, -1.7005860354, -0.2228576425, 0, 0, 0.7530295383] (1,1,1)
+-- initialConditions = initFromArray [0.336130095, 0, 0, 1.532431537, 0.7699893804, 0, 0, -0.6287350978, -1.1061194753, 0, 0, -0.9036964391] (1,1,1)
+initialConditions = initFromTupels ((-1, 0), (1, 0), (0, 1)) ((1, 1), (-2, 0), (1, -1)) (2, 2, 2)
 
 initFromArray :: [Float] -> (Float, Float, Float) -> SimulationData
 initFromArray a (mass1, mass2, mass3) = result
@@ -267,10 +268,11 @@ renderBodies :: SimulationData -> Picture
 renderBodies (SimulationData b1 b2 b3) = pictures [renderBody b1, renderBody b2, renderBody b3]
 
 render :: SimulationData -> Picture
-render simData = pictures (renderGrid center ++ [renderBodies (transformPositions center simData)])
+render simData = pictures (renderGrid center ++ [renderBodies transformedSimData, drawCOGTriangle transformedSimData])
     where
         --center = position (body2 simData)
         center = (position (body1 simData) + position (body2 simData) + position (body3 simData)) `scalarDiv` 3
+        transformedSimData = transformPositions center simData
 
 drawGrid :: Vector2D -> Float -> Float -> Float -> Color -> [Picture]
 drawGrid (Vector2D cx cy) width height spacing col =
@@ -280,6 +282,21 @@ drawGrid (Vector2D cx cy) width height spacing col =
     where
         offsetx = (cx * simulationScale) `mod'` spacing
         offsety = (cy * simulationScale) `mod'` spacing
+
+drawCOGTriangle :: SimulationData -> Picture
+drawCOGTriangle (SimulationData b1 b2 b3) = color (greyN 0.5) (pictures 
+    [
+        line [(x1, y1), (x2, y2), (x3, y3), (x1, y1)],
+        line [(x1/2 + x2/2, y1/2 + y2/2), (x3, y3)],
+        line [(x1/2 + x3/2, y1/2 + y3/2), (x2, y2)],
+        line [(x2/2 + x3/2, y2/2 + y3/2), (x1, y1)],
+        translate xCOG yCOG (circleSolid 2)
+    ])
+    where
+        (x1, y1) = (x (position b1) * simulationScale, y (position b1) * simulationScale)
+        (x2, y2) = (x (position b2) * simulationScale, y (position b2) * simulationScale)
+        (x3, y3) = (x (position b3) * simulationScale, y (position b3) * simulationScale)
+        (xCOG, yCOG) =  ((x1 + x2 + x3) / 3, (y1 + y2 + y3) / 3)
 
 renderGrid :: Vector2D -> [Picture]
 renderGrid center = drawGrid center 20000 20000 40 (greyN 0.1)
