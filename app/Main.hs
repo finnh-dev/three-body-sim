@@ -9,9 +9,6 @@ gConst = 1 -- 6.673 * (10.0 ** (-11))
 simulationScale :: Float
 simulationScale = 50
 
-massScale :: Float
-massScale = 1
-
 timeFactor :: Float
 timeFactor = 1
 
@@ -145,50 +142,6 @@ data SimulationData = SimulationData {
     body2 :: Body,
     body3 :: Body
 } deriving Show
-
-initData :: SimulationData
-initData = SimulationData {
-    body1 = Body {
-        mass = 1 * massScale,
-        position = Vector2D {
-            x = -0.97000436,
-            y = 0.24308753
-        },
-        velocity = Vector2D {
-            x = 0.4662036850,
-            y = 0.4323657300
-        },
-        c = green,
-        traceBuffer = []
-    },
-    body2 = Body {
-        mass = 1 * massScale,
-        position = Vector2D {
-            x = 0,
-            y = 0
-        },
-        velocity = Vector2D {
-            x = -0.93240737,
-            y = -0.86473146
-        },
-        c = red,
-        traceBuffer = []
-    },
-    body3 = Body {
-        mass = 1 * massScale,
-        position = Vector2D {
-            x = 0.97000436,
-            y = -0.24308753
-        },
-        velocity = Vector2D {
-            x = 0.4662036850,
-            y = 0.4323657300
-        },
-        c = blue,
-        traceBuffer = []
-    }
-}
-
 
 scalarDiv :: Vector2D -> Float -> Vector2D
 scalarDiv (Vector2D x1 y1) s = Vector2D (x1 / s) (y1 / s)
