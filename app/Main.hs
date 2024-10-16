@@ -7,7 +7,7 @@ gConst :: Float
 gConst = 1 -- 6.673 * (10.0 ** (-11))
 
 simulationScale :: Float
-simulationScale = 100
+simulationScale = 50
 
 massScale :: Float
 massScale = 1
@@ -23,29 +23,32 @@ fadeSpeed :: Float
 fadeSpeed = 1 / fromIntegral tailLength
 
 initialConditions :: SimulationData
--- initialConditions = initFromTupels ((-1,0), (1,0), (0, 0)) ((0.557809,0.451774), (0.557809,0.4751774), (-1.115618,-0.903548)) (1, 1, 1)
--- initialConditions = initFromTupels
---     ((-1.1889693067,0),
---     (3.8201881837,0),
---     (-2.631218877,0))
+initialConditions = initOrbit SetOne_1
 
---     ((0, 0.8042120498),
---     (0, 0.0212794833),
---     (0, -0.8254915331))
+data StableOrbits =
+    FigureEight     -- V Figure 8 -> V.1.A
+    | Flower        -- Broucke -> Broucke A2
+    | I_A_1_i_c_0_5 -- I.A i.c. -> I.A.1 i.c. (0.5) // unstable
+    | I_B_1_i_c_0_5 -- I.B i.c. -> I.B.1 i.c. (0.5) // unstable
+    | SetOne_1      -- Set One -> 1 // unstable
 
---     (1, 1, 1) 
--- initialConditions = initFromArray [0.336130095, 0, 0, 1.532431537, 0.7699893804, 0, 0, -0.6287350978, -1.1061194753, 0, 0, -0.9036964391] (1,1,1)
-initialConditions = initFromTupels ((-1, 0), (1, 0), (0, 1)) ((1, 1), (-2, 0), (1, -1)) (2, 2, 2)
+
+initOrbit :: StableOrbits -> SimulationData
+initOrbit FigureEight = initFromArray [-1, 0, 0.347113, 0.532727, 1, 0, 0.347113, 0.532727, 0, 0, -0.694226, -1.065454] (1, 1, 1)
+initOrbit Flower = initFromArray [0.336130095, 0, 0, 1.532431537, 0.7699893804, 0, 0, -0.6287350978, -1.1061194753, 0, 0, -0.9036964391] (1, 1, 1)
+initOrbit I_A_1_i_c_0_5 = initFromArray [-1, 0, 0.2869236336, 0.0791847624, 1, 0, 0.2869236336, 0.0791847624, 0, 0, -1.1476945344, -0.3167390496] (1, 1, 0.5)
+initOrbit I_B_1_i_c_0_5 = initFromArray [-1, 0, 0.2374365149, 0.2536896353, 1, 0, 0.2374365149, 0.2536896353, 0, 0, -0.9497460596, -1.0147585412] (1, 1, 0.5)
+initOrbit SetOne_1 = initFromArray [-1, 0, 0.7001954713173643, 0.4071718530521058, 1, 0, 0.7001954713173643, 0.4071718530521058, 0, 0, -1.4003909426347285, -0.8143437061042116] (1, 1, 1)
 
 initFromArray :: [Float] -> (Float, Float, Float) -> SimulationData
-initFromArray a (mass1, mass2, mass3) = result
+initFromArray [a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11] (mass1, mass2, mass3) = result
     where
-        pos1 = Vector2D (a!!0) (a!!1)
-        vel1 = Vector2D (a!!2) (a!!3)
-        pos2 = Vector2D (a!!4) (a!!5)
-        vel2 = Vector2D (a!!6) (a!!7)
-        pos3 = Vector2D (a!!8) (a!!9)
-        vel3 = Vector2D (a!!10) (a!!11)
+        pos1 = Vector2D a0 a1
+        vel1 = Vector2D a2 a3
+        pos2 = Vector2D a4 a5
+        vel2 = Vector2D a6 a7
+        pos3 = Vector2D a8 a9
+        vel3 = Vector2D a10 a11
         result = SimulationData {
             body1 = Body {
                 mass = mass1,
@@ -69,6 +72,7 @@ initFromArray a (mass1, mass2, mass3) = result
                 traceBuffer = []
             }
         }
+initFromArray _ _ = error "Malformed initial conditions"
 
 initFromTupels :: ((Float, Float), (Float, Float), (Float, Float)) -> ((Float, Float), (Float, Float), (Float, Float)) -> (Float, Float, Float) -> SimulationData
 initFromTupels ((p1x, p1y), (p2x, p2y), (p3x, p3y)) ((v1x, v1y), (v2x, v2y), (v3x, v3y)) (mass1, mass2, mass3) = result
@@ -268,9 +272,9 @@ renderBodies :: SimulationData -> Picture
 renderBodies (SimulationData b1 b2 b3) = pictures [renderBody b1, renderBody b2, renderBody b3]
 
 render :: SimulationData -> Picture
-render simData = pictures (renderGrid center ++ [renderBodies transformedSimData, drawCOGTriangle transformedSimData])
+render simData = pictures (renderGrid center ++ [renderBodies transformedSimData, drawCOGeoTriangle transformedSimData])
     where
-        --center = position (body2 simData)
+        -- center = position (body2 simData)
         center = (position (body1 simData) + position (body2 simData) + position (body3 simData)) `scalarDiv` 3
         transformedSimData = transformPositions center simData
 
@@ -283,20 +287,20 @@ drawGrid (Vector2D cx cy) width height spacing col =
         offsetx = (cx * simulationScale) `mod'` spacing
         offsety = (cy * simulationScale) `mod'` spacing
 
-drawCOGTriangle :: SimulationData -> Picture
-drawCOGTriangle (SimulationData b1 b2 b3) = color (greyN 0.5) (pictures 
+drawCOGeoTriangle :: SimulationData -> Picture
+drawCOGeoTriangle (SimulationData b1 b2 b3) = color (greyN 0.5) (pictures
     [
         line [(x1, y1), (x2, y2), (x3, y3), (x1, y1)],
         line [(x1/2 + x2/2, y1/2 + y2/2), (x3, y3)],
         line [(x1/2 + x3/2, y1/2 + y3/2), (x2, y2)],
         line [(x2/2 + x3/2, y2/2 + y3/2), (x1, y1)],
-        translate xCOG yCOG (circleSolid 2)
+        translate xCOGeo yCOGeo (circleSolid 2)
     ])
     where
         (x1, y1) = (x (position b1) * simulationScale, y (position b1) * simulationScale)
         (x2, y2) = (x (position b2) * simulationScale, y (position b2) * simulationScale)
         (x3, y3) = (x (position b3) * simulationScale, y (position b3) * simulationScale)
-        (xCOG, yCOG) =  ((x1 + x2 + x3) / 3, (y1 + y2 + y3) / 3)
+        (xCOGeo, yCOGeo) =  ((x1 + x2 + x3) / 3, (y1 + y2 + y3) / 3)
 
 renderGrid :: Vector2D -> [Picture]
 renderGrid center = drawGrid center 20000 20000 40 (greyN 0.1)
