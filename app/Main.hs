@@ -1,5 +1,5 @@
 module Main where
-import Parts.Gloss
+import Graphics.Gloss
 import Parts.Init
 import Parts.Render
 
