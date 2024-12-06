@@ -1,11 +1,14 @@
 module Parts.Init where
 
 import Graphics.Gloss
+import Parts.Constants
 import Parts.Dataclasses
 import Parts.Vector2D
 
 initialConditions :: SimulationData
+-- initialConditions = initFromArray [-1, 0, 0.7001954713173643, 0.4071718530521058, 1, 0, 0.7001954713173643, 0.4071718530521058, 0, 0, -1.4003909426347285, -0.8143437061042116] (1 / gConst, 1 / gConst, 1 / gConst)
 initialConditions = initOrbit I_B_1_i_c_0_5
+
 
 data StableOrbits =
     FigureEight     -- V Figure 8 -> V.1.A
