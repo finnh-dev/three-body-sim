@@ -81,7 +81,7 @@ For example:
 ![image](https://github.com/user-attachments/assets/148d35cb-795a-4b70-a49f-0f3ec5590644)
 
 
-#License
+# License
 Copyright (c) 2024 Finn H
 
 Permission is hereby granted, free of charge, to any person obtaining
