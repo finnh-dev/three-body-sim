@@ -74,6 +74,8 @@ sudo apt-get install freeglut3-dev
 # Configuration
 If you want to try out other Orbits, you can swap them in the `Init.hs` file.
 For example:
+
 `initialConditions = initOrbit FigureEight`
+
 ![image](https://github.com/user-attachments/assets/148d35cb-795a-4b70-a49f-0f3ec5590644)
 
