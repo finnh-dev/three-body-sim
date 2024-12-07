@@ -45,7 +45,7 @@ Ensure you have the following installed on your system:
 
 After completing these steps, FreeGLUT should be installed and ready to use on your system.
 
-## Example for UNIX based operating systems
+# Example for UNIX based operating systems
 - Ensure your system is up to date.
 - Consult your package manager for the correct name of the package FreeGLUT.
 - Example for:
