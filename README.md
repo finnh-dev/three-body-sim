@@ -20,10 +20,10 @@ Ensure you have the following installed on your system:
 
 1. **Download FreeGLUT**  
    - Go to the [Transmission Zero FreeGLUT page](http://www.transmissionzero.co.uk/software/freeglut-devel/).
-   - Download the **MinGW version** of FreeGLUT.
+   - Download the **MSVC Package** of FreeGLUT.
 
 2. **Extract the ZIP File**  
-   - Extract the file `freeglut-MinGW-3.0.0-1.mp.zip`.
+   - Extract the file `freeglut-MSVC-3.0.0-2.mp.zip`.
    - Navigate to the folder:  
      ```
      freeglut\bin\x64\
