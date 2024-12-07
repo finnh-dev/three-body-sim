@@ -14,7 +14,6 @@ Follow these steps to get started:
 ### Prerequisites  
 Ensure you have the following installed on your system:  
 - [Git](https://git-scm.com/)
-- 
 ### Steps  
 1. Clone the repository:  
    ```bash  
