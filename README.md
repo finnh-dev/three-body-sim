@@ -45,15 +45,10 @@ Ensure you have the following installed on your system:
 
 After completing these steps, FreeGLUT should be installed and ready to use on your system.
 
-# Steps for UNIX-based operating systems
-- Ensure your system is up to date.
-- Consult the
-## Installing FreeGLUT
-
-
 ## Example for UNIX based operating systems
-Consult your package manager for the correct name of the package FreeGLUT.
-Example for:
+- Ensure your system is up to date.
+- Consult your package manager for the correct name of the package FreeGLUT.
+- Example for:
 ## Arch-based Systems
 Run the following command to install FreeGLUT:
 ```bash
