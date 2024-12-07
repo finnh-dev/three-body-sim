@@ -59,7 +59,7 @@ Run the following command to install FreeGLUT:
 ```bash
 sudo apt-get install freeglut3-dev
 ```
-### Steps  
+# Steps  
 1. Clone the repository:  
    ```bash  
    git clone https://github.com/finnh-dev/three-body-sim.git  
