@@ -73,6 +73,7 @@ sudo apt-get install freeglut3-dev
    cabal run :all
 # Configuration
 If you want to try out other Orbits, you can swap them in the `Init.hs` file.
+
 For example:
 
 `initialConditions = initOrbit FigureEight`
