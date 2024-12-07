@@ -16,7 +16,7 @@ Ensure you have the following installed on your system:
 - [Git](https://git-scm.com/)
 - GLUT
 
-# Steps for Microsoft Windows
+# Steps for installing GLUT for Microsoft Windows
 
 1. **Download FreeGLUT**  
    - Go to the [Transmission Zero FreeGLUT page](http://www.transmissionzero.co.uk/software/freeglut-devel/).
