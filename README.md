@@ -14,7 +14,7 @@ Follow these steps to get started:
 ### Prerequisites  
 Ensure you have the following installed on your system:  
 - [Git](https://git-scm.com/)
-- FreeGLUT
+- GLUT
 
 ## Steps for Microsoft Windows
 
