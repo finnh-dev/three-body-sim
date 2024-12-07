@@ -20,6 +20,8 @@ Ensure you have the following installed on your system:
    ```bash  
    git clone https://github.com/finnh-dev/three-body-sim.git  
 2. Navigate into the repository:
+   ```bash
    cd three-body-sim
-3. Start the application:
+4. Start the application:
+   ```bash
    cabal run :all
