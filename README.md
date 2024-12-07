@@ -50,11 +50,13 @@ After completing these steps, FreeGLUT should be installed and ready to use on y
 - Consult your package manager for the correct name of the package FreeGLUT.
   
 **Arch-based Systems**
+
 Run the following command to install FreeGLUT:
 ```bash
 sudo pacman -S freeglut
 ```
  **Debian-based Systems**  
+ 
 Run the following command to install FreeGLUT:  
 ```bash
 sudo apt-get install freeglut3-dev
