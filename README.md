@@ -7,16 +7,16 @@ A simulation of the three-body problem in Haskell.
 - Customize initial conditions for experimentation.  
 - Explore the fascinating dynamics of chaotic systems.  
 
-## Installation  
+# Installation  
 
 Follow these steps to get started:  
 
-### Prerequisites  
+## Prerequisites  
 Ensure you have the following installed on your system:  
 - [Git](https://git-scm.com/)
 - GLUT
 
-## Steps for Microsoft Windows
+# Steps for Microsoft Windows
 
 1. **Download FreeGLUT**  
    - Go to the [Transmission Zero FreeGLUT page](http://www.transmissionzero.co.uk/software/freeglut-devel/).
@@ -45,6 +45,25 @@ Ensure you have the following installed on your system:
 
 After completing these steps, FreeGLUT should be installed and ready to use on your system.
 
+# Steps for UNIX-based operating systems
+- Ensure your system is up to date.
+- Consult the
+## Installing FreeGLUT
+
+
+## Example for UNIX based operating systems
+Consult your package manager for the correct name of the package FreeGLUT.
+Example for:
+## Arch-based Systems
+Run the following command to install FreeGLUT:
+```bash
+sudo pacman -S freeglut
+```
+## Debian-based Systems  
+Run the following command to install FreeGLUT:  
+```bash
+sudo apt-get install freeglut3-dev
+```
 ### Steps  
 1. Clone the repository:  
    ```bash  
