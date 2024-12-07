@@ -55,7 +55,7 @@ After completing these steps, FreeGLUT should be installed and ready to use on y
    ```bash
    sudo pacman -S freeglut
    ```
-  **Debian-based Systems**  
+- **Debian-based Systems**  
  
    Run the following command to install FreeGLUT:  
    ```bash
