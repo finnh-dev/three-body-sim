@@ -85,7 +85,7 @@ For example:
 
 `initialConditions = initOrbit FigureEight`
 
-![image](https://github.com/user-attachments/assets/148d35cb-795a-4b70-a49f-0f3ec5590644)
+![image](https://github.com/finnh-dev/three-body-sim/blob/refactor_hard_DOC/screenshots/configuration_screenshot.png)
 
 
 # License
