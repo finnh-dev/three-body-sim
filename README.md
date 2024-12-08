@@ -49,12 +49,12 @@ After completing these steps, FreeGLUT should be installed and ready to use on y
 - Ensure your system is up to date.
 - Consult your package manager for the correct name of the package FreeGLUT.
 
-  **Example for macOS**
+**Example for macOS**
 
-  Run the following command to install FreeGLUT:
-  ```bash
-     brew install freeglut
-  ```
+Run the following command to install FreeGLUT:
+```bash
+  brew install freeglut
+```
   
  **Example Arch-based Systems**
 
