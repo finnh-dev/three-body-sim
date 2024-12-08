@@ -34,6 +34,7 @@ initOrbit SetOne_1 = initFromArray [-1, 0, 0.7001954713173643, 0.407171853052105
 
 -- | Initializes a `SimulationData` object from an array of position and velocity values.
 -- 
+-- Used to import arrays in json format from https://observablehq.com/@rreusser/periodic-planar-three-body-orbits
 -- Each body is defined using four consecutive elements:
 -- - Two for the position (x, y).
 -- - Two for the velocity (vx, vy).
