@@ -12,7 +12,7 @@ import Parts.Vector2D
 -- This can be set to a specific orbit configuration using `initOrbit` or customized directly.
 initialConditions :: SimulationData
 -- Uncomment the line below to initialize using a custom array of values.
--- initialConditions = initFromArray [-1, 0, 0.7001954713173643, 0.4071718530521058, 1, 0, 0.7001954713173643, 0.4071718530521058, 0, 0, -1.4003909426347285, -0.8143437061042116] (1 / gConst, 1 / gConst, 1 / gConst)
+-- initialConditions = initFromArray [-1, 0, 0.7001954713173643, 0.4071718530521058, 1, 0, 0.7001954713173643, 0.4071718530521058, 0, 0, -1.4003909426347285, -0.8143437061042116] (1, 1, 1)
 initialConditions = initOrbit I_B_1_i_c_0_5
 
 -- | Enumeration of predefined stable orbit configurations.
