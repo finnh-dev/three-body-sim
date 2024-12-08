@@ -5,7 +5,6 @@
 module Parts.Init where
 
 import Graphics.Gloss
-import Parts.Constants
 import Parts.Dataclasses
 import Parts.Vector2D
 

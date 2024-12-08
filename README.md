@@ -85,7 +85,22 @@ For example:
 
 `initialConditions = initOrbit FigureEight`
 
-![image](https://github.com/finnh-dev/three-body-sim/blob/refactor_hard_DOC/screenshots/configuration_screenshot.png)
+```hs
+-- | The initial conditions for the simulation.
+-- This can be set to a specific orbit configuration using `initOrbit` or customized directly.
+initialConditions :: SimulationData
+-- Uncomment the line below to initialize using a custom array of values.
+-- initialConditions = initFromArray [-1, 0, 0.7001954713173643, 0.4071718530521058, 1, 0, 0.7001954713173643, 0.4071718530521058, 0, 0, -1.4003909426347285, -0.8143437061042116] (1 / gConst, 1 / gConst, 1 / gConst)
+initialConditions = initOrbit I_B_1_i_c_0_5
+
+-- | Enumeration of predefined stable orbit configurations.
+data StableOrbits =
+      FigureEight     -- ^ Represents a "Figure 8" orbit (e.g., V.1.A).
+    | Flower          -- ^ Represents a "Flower" orbit (e.g., Broucke A2).
+    | I_A_1_i_c_0_5   -- ^ Represents an unstable orbit I.A.1 (initial condition 0.5).
+    | I_B_1_i_c_0_5   -- ^ Represents an unstable orbit I.B.1 (initial condition 0.5).
+    | SetOne_1        -- ^ Represents an unstable orbit from "Set One -> 1".
+```
 
 
 # License
