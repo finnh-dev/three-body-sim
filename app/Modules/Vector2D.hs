@@ -1,7 +1,7 @@
--- | Module: Parts.Vector2D
+-- | Module: Modules.Vector2D
 -- This module defines a 2D vector type and implements basic vector operations.
 
-module Parts.Vector2D where
+module Modules.Vector2D where
 
 -- | A 2D vector with `x` and `y` components.
 data Vector2D = Vector2D {

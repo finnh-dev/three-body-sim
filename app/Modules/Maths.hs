@@ -1,14 +1,14 @@
--- | Module: Parts.Maths
+-- | Module: Modules.Maths
 -- This module provides mathematical utilities for simulating the motion and interactions of
 -- celestial bodies in a 2D space. It includes functions for updating positions, applying forces,
 -- and computing accelerations based on gravitational interactions.
 
-module Parts.Maths where
+module Modules.Maths where
 
 import Data.Fixed (mod')
-import Parts.Dataclasses
-import Parts.Vector2D
-import Parts.Constants
+import Modules.Dataclasses
+import Modules.Vector2D
+import Modules.Constants
 
 -- | Sets a new position for a given `Body`.
 -- 

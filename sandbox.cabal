@@ -63,12 +63,12 @@ executable sandbox
 
     -- Modules included in this executable, other than Main.
     other-modules:
-        Parts.Constants
-        Parts.Dataclasses
-        Parts.Init
-        Parts.Maths
-        Parts.Render
-        Parts.Vector2D
+        Modules.Constants
+        Modules.Dataclasses
+        Modules.Init
+        Modules.Maths
+        Modules.Render
+        Modules.Vector2D
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
 

@@ -5,8 +5,8 @@
 module Main where
 
 import Graphics.Gloss
-import Parts.Init
-import Parts.Render
+import Modules.Init
+import Modules.Render
 
 -- | The `main` function initializes and runs the simulation using Gloss's `simulate` function.
 -- It sets up the simulation window, background, frame rate, initial conditions, rendering logic, 

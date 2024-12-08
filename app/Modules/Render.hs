@@ -1,15 +1,15 @@
--- | Module: Parts.Render
+-- | Module: Modules.Render
 -- This module provides rendering and visualization functions for the simulation. It includes utilities for 
 -- drawing celestial bodies, their traces, and additional elements like grids and geometric representations.
 
-module Parts.Render where
+module Modules.Render where
 
 import Data.Fixed (mod')
 import Graphics.Gloss
-import Parts.Dataclasses
-import Parts.Vector2D
-import Parts.Constants
-import Parts.Maths
+import Modules.Dataclasses
+import Modules.Vector2D
+import Modules.Constants
+import Modules.Maths
 
 -- | The fading speed of the trace. Controls how quickly the trace fades over time.
 fadeSpeed :: Float

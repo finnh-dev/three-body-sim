@@ -1,12 +1,12 @@
--- | Module: Parts.Init
+-- | Module: Modules.Init
 -- This module defines functions and data for initializing simulation states, including
 -- predefined stable orbits and custom initial configurations for celestial bodies.
 
-module Parts.Init where
+module Modules.Init where
 
 import Graphics.Gloss
-import Parts.Dataclasses
-import Parts.Vector2D
+import Modules.Dataclasses
+import Modules.Vector2D
 
 -- | The initial conditions for the simulation.
 -- This can be set to a specific orbit configuration using `initOrbit` or customized directly.

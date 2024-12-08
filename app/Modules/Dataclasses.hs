@@ -1,12 +1,12 @@
--- | Module: Parts.Dataclasses
+-- | Module: Modules.Dataclasses
 -- This module defines data structures used in the simulation, such as celestial bodies and
 -- the overall simulation state. These structures encapsulate the properties and behaviors
 -- of simulated entities.
 
-module Parts.Dataclasses where
+module Modules.Dataclasses where
 
 import Graphics.Gloss
-import Parts.Vector2D
+import Modules.Vector2D
 
 -- | Represents a celestial body or particle in the simulation.
 data Body = Body {

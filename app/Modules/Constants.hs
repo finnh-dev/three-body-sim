@@ -1,8 +1,8 @@
--- | Module: Parts.Constants
+-- | Module: Modules.Constants
 -- This module defines constants used in a simulation, such as physical constants,
 -- simulation scaling factors, and other parameters.
 
-module Parts.Constants where
+module Modules.Constants where
 
 -- | Gravitational constant (G).
 -- This value is currently set to 1 for simplicity, rather than the actual
