@@ -13,9 +13,11 @@ Follow these steps to get started:
 
 ## Prerequisites  
 Ensure you have the following installed on your system:  
-- [Git](https://git-scm.com/)
+- Cabal
 - GLUT
 
+# Installing Cabal
+Install Cabal via [GHCup](https://www.haskell.org/ghcup/).
 # Steps for installing GLUT for Microsoft Windows
 
 1. **Download FreeGLUT**  
@@ -69,10 +71,8 @@ brew install freeglut
    sudo apt-get install freeglut3-dev
    ```
 # Usage  
-1. Clone the repository:  
-   ```bash  
-   git clone https://github.com/finnh-dev/three-body-sim.git  
-2. Navigate into the repository:
+1. Unzip the project at the desired location.
+2. Navigate into the project folder within a console:
    ```bash
    cd three-body-sim
 4. Start the application:
@@ -102,9 +102,8 @@ data StableOrbits =
     | SetOne_1        -- ^ Represents an unstable orbit from "Set One -> 1".
 ```
 
-
 # License
-Copyright (c) 2024 Finn H
+Copyright (c) 2024 Finn H, Sebastian S, Felix B
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
